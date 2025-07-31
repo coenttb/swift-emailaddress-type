@@ -253,3 +253,8 @@ extension EmailAddress {
         return email
     }
 }
+
+extension EmailAddress {
+    /// A non-RFC5322 compliant regex for simple validation scenarios
+    public static let regex: String = #"^(?!.*\.\.)[A-Za-z0-9](?:[A-Za-z0-9._%+-]{0,62}[A-Za-z0-9])?@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+}
