@@ -22,13 +22,13 @@ let package = Package(
     name: "swift-emailaddress-type",
     platforms: [ .macOS(.v13), .iOS(.v16) ],
     products: [
-        .library(name: .emailAddress, targets: [.emailAddress]),
+        .library(name: .emailAddress, targets: [.emailAddress])
     ],
     dependencies: [
         .package(url: "https://github.com/swift-web-standards/swift-rfc-5321", from: "0.0.1"),
         .package(url: "https://github.com/swift-web-standards/swift-rfc-5322", from: "0.0.1"),
         .package(url: "https://github.com/swift-web-standards/swift-rfc-6531", from: "0.0.1"),
-        .package(url: "https://github.com/coenttb/swift-domain-type", from: "0.0.1"),
+        .package(url: "https://github.com/coenttb/swift-domain-type", from: "0.0.1")
     ],
     targets: [
         .target(
@@ -45,7 +45,7 @@ let package = Package(
             dependencies: [
                 .emailAddress
             ]
-        ),
+        )
     ],
     swiftLanguageModes: [.v6]
 )
