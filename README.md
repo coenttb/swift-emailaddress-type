@@ -266,10 +266,15 @@ public enum EmailAddressError: Error, Equatable, LocalizedError {
 
 ## Related Packages
 
-- [swift-rfc-5321](https://github.com/swift-web-standards/swift-rfc-5321) - RFC 5321 SMTP email addresses
-- [swift-rfc-5322](https://github.com/swift-web-standards/swift-rfc-5322) - RFC 5322 Internet Message Format
-- [swift-rfc-6531](https://github.com/swift-web-standards/swift-rfc-6531) - RFC 6531 Internationalized email
-- [swift-domain-type](https://github.com/coenttb/swift-domain-type) - Type-safe domain names
+### Dependencies
+
+- [swift-domain-type](https://github.com/coenttb/swift-domain-type): A Swift package with a type-safe Domain model.
+
+### Used By
+
+- [swift-authenticating](https://github.com/coenttb/swift-authenticating): A Swift package for type-safe HTTP authentication with URL routing integration.
+- [swift-types-foundation](https://github.com/coenttb/swift-types-foundation): A Swift package bundling essential type-safe packages for domain modeling.
+- [swift-web-foundation](https://github.com/coenttb/swift-web-foundation): A Swift package with tools to simplify web development.
 
 ## Requirements
 
