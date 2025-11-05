@@ -1,9 +1,7 @@
 # swift-emailaddress-type
 
-[![Swift](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
-[![Platforms](https://img.shields.io/badge/Platforms-macOS%2013%2B%20|%20iOS%2016%2B-lightgray.svg)]()
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![CI](https://github.com/coenttb/swift-emailaddress-type/workflows/CI/badge.svg)](https://github.com/coenttb/swift-emailaddress-type/actions/workflows/ci.yml)
+![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
 Type-safe email address validation and parsing for Swift, supporting multiple RFC standards.
 
