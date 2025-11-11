@@ -1,7 +1,8 @@
-import Testing
 import Foundation
-@testable import EmailAddress
 import RFC_2822
+import Testing
+
+@testable import EmailAddress
 
 @Suite("RFC 2822 AddrSpec Conversion Tests")
 struct RFC2822ConversionTests {
