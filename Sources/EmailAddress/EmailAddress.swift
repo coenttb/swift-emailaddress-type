@@ -71,55 +71,6 @@ public struct EmailAddress: Hashable, Sendable {
         )
     }
 
-    /// Initialize from RFC5321
-    public init(rfc5321: RFC_5321.EmailAddress) throws {
-        self.rfc5321 = rfc5321
-        self.rfc5322 = try? RFC_5322.EmailAddress(
-            displayName: rfc5321.displayName,
-            localPart: .init(rfc5321.localPart.stringValue),
-            domain: .init(rfc5321.domain.name)
-        )
-        self.rfc6531 = try {
-            guard
-                let email = try? RFC_6531.EmailAddress(
-                    displayName: rfc5321.displayName,
-                    localPart: .init(rfc5321.localPart.stringValue),
-                    domain: .init(rfc5321.domain.name)
-                )
-            else {
-                throw EmailAddressError.conversionFailure
-            }
-            return email
-        }()
-        self.displayName = rfc5321.displayName
-    }
-
-    /// Initialize from RFC5322
-    public init(rfc5322: RFC_5322.EmailAddress) throws {
-        self.rfc5321 = try? rfc5322.toRFC5321()
-        self.rfc5322 = rfc5322
-        self.rfc6531 = try {
-            guard
-                let email = try? RFC_6531.EmailAddress(
-                    displayName: rfc5322.displayName,
-                    localPart: .init(rfc5322.localPart.stringValue),
-                    domain: rfc5322.domain
-                )
-            else {
-                throw EmailAddressError.conversionFailure
-            }
-            return email
-        }()
-        self.displayName = rfc5322.displayName
-    }
-
-    /// Initialize from RFC6531
-    public init(rfc6531: RFC_6531.EmailAddress) {
-        self.rfc5321 = try? rfc6531.toRFC5321()
-        self.rfc5322 = try? rfc6531.toRFC5322()
-        self.rfc6531 = rfc6531
-        self.displayName = rfc6531.displayName
-    }
 }
 
 // MARK: - Properties
@@ -200,7 +151,7 @@ extension EmailAddress {
 
 // MARK: - Errors
 extension EmailAddress {
-    public enum EmailAddressError: Error, Equatable, LocalizedError {
+    public enum Error: Swift.Error, Equatable, LocalizedError {
         case conversionFailure
         case invalidFormat(description: String)
 
@@ -251,7 +202,7 @@ extension EmailAddress {
     public static func ascii(_ string: String) throws -> Self {
         let email = try Self(string)
         guard email.isASCII else {
-            throw EmailAddressError.invalidFormat(description: "Must be ASCII-only")
+            throw Error.invalidFormat(description: "Must be ASCII-only")
         }
         return email
     }
