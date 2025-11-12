@@ -26,10 +26,10 @@ let package = Package(
         .library(name: .emailAddress, targets: [.emailAddress])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-web-standards/swift-rfc-2822", from: "0.0.1"),
-        .package(url: "https://github.com/swift-web-standards/swift-rfc-5321", from: "0.0.1"),
-        .package(url: "https://github.com/swift-web-standards/swift-rfc-5322", from: "0.0.1"),
-        .package(url: "https://github.com/swift-web-standards/swift-rfc-6531", from: "0.0.1"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-2822", from: "0.0.1"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-5321", from: "0.0.1"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-5322", from: "0.0.1"),
+        .package(url: "https://github.com/swift-standards/swift-rfc-6531", from: "0.0.1"),
         .package(url: "https://github.com/coenttb/swift-domain-type", from: "0.0.1")
     ],
     targets: [
