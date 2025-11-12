@@ -95,13 +95,19 @@ extension EmailAddress {
 public typealias DomainTypealias = Domain
 extension EmailAddress {
     /// The domain part (after @)
+    ///
+    /// - Note: Uses `try!` for RFC format conversions because EmailAddress initialization
+    ///   ensures all RFC variants contain valid, compatible domains. Converting from an already-validated
+    ///   RFC 5322 or RFC 6531 domain to RFC 1123 format cannot fail since validation occurred during init.
     public var domain: _Domain {
         if let domain = rfc5321?.domain {
             return .init(rfc5321: domain)
         }
         if let domain = rfc5322?.domain {
+            // Safe: RFC 5322 domain was validated during EmailAddress init
             return try! .init(rfc1123: domain)
         }
+        // Safe: RFC 6531 domain was validated during EmailAddress init
         return try! .init(rfc1123: rfc6531.domain)
     }
 
@@ -121,15 +127,21 @@ extension EmailAddress {
     /// Returns a normalized version of the email address
     /// - For ASCII addresses, uses the most restrictive format available (5321 > 5322 > 6531)
     /// - For international addresses, uses RFC 6531
+    ///
+    /// - Note: Uses `try!` when reconstructing EmailAddress from already-validated RFC formats.
+    ///   Since these RFC variants were validated during the original EmailAddress initialization,
+    ///   recreating an EmailAddress from them is guaranteed to succeed.
     public func normalized() -> EmailAddress {
         // Already normalized if we only have RFC 6531
         guard isASCII else { return self }
 
         // Use most restrictive format available
         if let rfc5321 = self.rfc5321 {
+            // Safe: Reconstructing from already-validated RFC 5321 format
             return try! EmailAddress(rfc5321: rfc5321)
         }
         if let rfc5322 = self.rfc5322 {
+            // Safe: Reconstructing from already-validated RFC 5322 format
             return try! EmailAddress(rfc5322: rfc5322)
         }
         return self
