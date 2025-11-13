@@ -23,3 +23,19 @@ extension EmailAddress {
         self.displayName = rfc5322.displayName
     }
 }
+
+extension RFC_5322.EmailAddress {
+    /// Initialize from EmailAddress
+    ///
+    /// Enables round-trip conversion between EmailAddress and RFC_5322.EmailAddress.
+    /// This is particularly useful when converting Email objects to RFC 5322 Message format.
+    ///
+    /// - Parameter emailAddress: The EmailAddress to convert
+    /// - Throws: If the EmailAddress doesn't have a valid RFC 5322 representation
+    public init(_ emailAddress: EmailAddress) throws {
+        guard let rfc5322 = emailAddress.rfc5322 else {
+            throw EmailAddress.Error.conversionFailure
+        }
+        self = rfc5322
+    }
+}

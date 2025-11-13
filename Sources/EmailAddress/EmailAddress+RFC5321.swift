@@ -27,3 +27,18 @@ extension EmailAddress {
         self.displayName = rfc5321.displayName
     }
 }
+
+extension RFC_5321.EmailAddress {
+    /// Initialize from EmailAddress
+    ///
+    /// Enables round-trip conversion between EmailAddress and RFC_5321.EmailAddress.
+    ///
+    /// - Parameter emailAddress: The EmailAddress to convert
+    /// - Throws: If the EmailAddress doesn't have a valid RFC 5321 representation
+    public init(_ emailAddress: EmailAddress) throws {
+        guard let rfc5321 = emailAddress.rfc5321 else {
+            throw EmailAddress.Error.conversionFailure
+        }
+        self = rfc5321
+    }
+}
