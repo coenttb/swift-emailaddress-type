@@ -12,55 +12,52 @@ import RFC_5322
 import RFC_6531
 
 /// An email address that can be represented according to different RFC standards
+///
+/// Internally stores a single canonical RFC 6531 representation (most permissive format).
+/// Other RFC variants (5321, 5322) are computed on-demand when accessed.
 public struct EmailAddress: Hashable, Sendable {
-    let rfc5321: RFC_5321.EmailAddress?
-    let rfc5322: RFC_5322.EmailAddress?
-    let rfc6531: RFC_6531.EmailAddress
+    /// The canonical RFC 6531 representation
+    private let canonical: RFC_6531.EmailAddress
+
+    /// RFC 5321 (SMTP) representation, if the address is ASCII-only
+    public var rfc5321: RFC_5321.EmailAddress? {
+        guard canonical.isASCII else { return nil }
+        return try? RFC_5321.EmailAddress(canonical)
+    }
+
+    /// RFC 5322 (Internet Message Format) representation, if the address is ASCII-only
+    public var rfc5322: RFC_5322.EmailAddress? {
+        guard canonical.isASCII else { return nil }
+        return try? RFC_5322.EmailAddress(canonical)
+    }
+
+    /// RFC 6531 (SMTPUTF8) representation - always available
+    public var rfc6531: RFC_6531.EmailAddress { canonical }
 
     /// The display name associated with this email address, if any
-    public let displayName: String?
+    public var displayName: String? { canonical.displayName }
 
     public var name: String? { displayName }
-    public var address: String { self.rfc6531.addressValue }
+    public var address: String { canonical.addressValue }
 
     /// Initialize with an email address string
     public init(
         displayName: String? = nil,
         _ string: String
     ) throws {
-        // RFC 6531 is required as it's our most permissive format
+        // Parse as RFC 6531 (most permissive format)
         let rfc6531Address = try RFC_6531.EmailAddress(string)
 
-        // If a display name was provided, update the RFC6531 instance
+        // Store canonical form with optional display name override
         if let displayName = displayName {
-            self.rfc6531 = RFC_6531.EmailAddress(
+            self.canonical = RFC_6531.EmailAddress(
                 displayName: displayName,
                 localPart: rfc6531Address.localPart,
                 domain: rfc6531Address.domain
             )
         } else {
-            self.rfc6531 = rfc6531Address
+            self.canonical = rfc6531Address
         }
-
-        // Try to initialize stricter formats if possible
-        if rfc6531.isASCII {
-            self.rfc5322 = try? RFC_5322.EmailAddress(
-                displayName: displayName ?? rfc6531.displayName,
-                localPart: .init(rfc6531.localPart.stringValue),
-                domain: rfc6531.domain
-            )
-
-            self.rfc5321 = try? RFC_5321.EmailAddress(
-                displayName: displayName ?? rfc6531.displayName,
-                localPart: .init(rfc6531.localPart.stringValue),
-                domain: rfc6531.domain
-            )
-        } else {
-            self.rfc5322 = nil
-            self.rfc5321 = nil
-        }
-
-        self.displayName = displayName ?? rfc6531.displayName
     }
 
     /// Initialize with components
@@ -69,6 +66,12 @@ public struct EmailAddress: Hashable, Sendable {
             displayName: displayName,
             "\(localPart)@\(domain)"
         )
+    }
+
+    /// Internal initializer that directly stores the canonical RFC 6531 representation
+    /// Used by conversion initializers in EmailAddress+RFC*.swift files
+    internal init(canonical: RFC_6531.EmailAddress) {
+        self.canonical = canonical
     }
 
 }

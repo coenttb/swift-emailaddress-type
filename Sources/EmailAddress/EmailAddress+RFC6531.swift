@@ -5,11 +5,14 @@ import RFC_6531
 
 extension EmailAddress {
     /// Initialize from RFC6531
+    ///
+    /// Stores an RFC 6531 (SMTPUTF8) email address directly as the canonical representation.
+    /// This is the most efficient initialization since RFC 6531 is the canonical format.
+    ///
+    /// - Parameter rfc6531: The RFC 6531 email address to store
     public init(rfc6531: RFC_6531.EmailAddress) {
-        self.rfc5321 = try? RFC_5321.EmailAddress(rfc6531)
-        self.rfc5322 = try? RFC_5322.EmailAddress(rfc6531)
-        self.rfc6531 = rfc6531
-        self.displayName = rfc6531.displayName
+        // Store directly as canonical (RFC 6531 is the canonical format)
+        self.init(canonical: rfc6531)
     }
 }
 

@@ -5,22 +5,16 @@ import RFC_6531
 
 extension EmailAddress {
     /// Initialize from RFC5322
+    ///
+    /// Converts an RFC 5322 (Internet Message Format) email address to the EmailAddress type
+    /// by storing it as the canonical RFC 6531 format internally.
+    ///
+    /// - Parameter rfc5322: The RFC 5322 email address to convert
+    /// - Throws: If the conversion to RFC 6531 fails
     public init(rfc5322: RFC_5322.EmailAddress) throws {
-        self.rfc5321 = try? RFC_5321.EmailAddress(rfc5322)
-        self.rfc5322 = rfc5322
-        self.rfc6531 = try {
-            guard
-                let email = try? RFC_6531.EmailAddress(
-                    displayName: rfc5322.displayName,
-                    localPart: .init(rfc5322.localPart.stringValue),
-                    domain: rfc5322.domain
-                )
-            else {
-                throw EmailAddress.Error.conversionFailure
-            }
-            return email
-        }()
-        self.displayName = rfc5322.displayName
+        // Convert to RFC 6531 and store as canonical
+        let rfc6531 = try RFC_6531.EmailAddress(rfc5322)
+        self.init(canonical: rfc6531)
     }
 }
 
