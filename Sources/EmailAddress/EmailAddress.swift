@@ -91,12 +91,12 @@ extension EmailAddress {
     /// The local part (before @)
     public var localPart: String {
         if let rfc5321 = rfc5321 {
-            return rfc5321.localPart.description
+            return String(describing: rfc5321.localPart)
         }
         if let rfc5322 = rfc5322 {
-            return rfc5322.localPart.description
+            return String(describing: rfc5322.localPart)
         }
-        return rfc6531.localPart.description
+        return String(describing: rfc6531.localPart)
     }
 }
 

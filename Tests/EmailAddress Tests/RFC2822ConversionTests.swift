@@ -22,7 +22,7 @@ struct RFC2822ConversionTests {
         let addrSpec = try RFC_2822.AddrSpec(localPart: "test", domain: "example.org")
         let email = try EmailAddress(addrSpec)
 
-        #expect(email.rfc5322?.localPart.stringValue == "test")
+        #expect(email.rfc5322?.localPart.description == "test")
         #expect(email.rfc5322?.domain.name == "example.org")
     }
 

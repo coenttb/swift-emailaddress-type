@@ -21,13 +21,13 @@ extension RFC_2822.AddrSpec {
         // Try to use RFC 5322 representation if available (most compatible)
         if let rfc5322 = emailAddress.rfc5322 {
             try self.init(
-                localPart: rfc5322.localPart.description,
+                localPart: String(describing: rfc5322.localPart),
                 domain: rfc5322.domain.name
             )
         } else {
             // Fall back to RFC 6531 (most permissive)
             try self.init(
-                localPart: emailAddress.rfc6531.localPart.description,
+                localPart: String(describing: emailAddress.rfc6531.localPart),
                 domain: emailAddress.rfc6531.domain.name
             )
         }
