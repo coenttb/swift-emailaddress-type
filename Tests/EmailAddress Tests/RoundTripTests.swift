@@ -6,11 +6,12 @@
 //
 
 import Foundation
-@testable import EmailAddress
 import RFC_5321
 import RFC_5322
 import RFC_6531
 import Testing
+
+@testable import EmailAddress
 
 @Suite("Round-Trip Conversion Tests")
 struct RoundTripTests {
