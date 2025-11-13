@@ -13,7 +13,7 @@ extension RFC_5322.EmailAddress {
     public init(_ rfc6531: RFC_6531.EmailAddress) throws {
         try self.init(
             displayName: rfc6531.displayName,
-            localPart: .init(rfc6531.localPart.stringValue),
+            localPart: .init(rfc6531.localPart.description),
             domain: rfc6531.domain
         )
     }
@@ -30,7 +30,7 @@ extension RFC_6531.EmailAddress {
     public init(_ rfc5322: RFC_5322.EmailAddress) throws {
         try self.init(
             displayName: rfc5322.displayName,
-            localPart: .init(rfc5322.localPart.stringValue),
+            localPart: .init(rfc5322.localPart.description),
             domain: rfc5322.domain
         )
     }
