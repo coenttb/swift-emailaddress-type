@@ -6,8 +6,8 @@ import RFC_6531
 extension EmailAddress {
     /// Initialize from RFC6531
     public init(rfc6531: RFC_6531.EmailAddress) {
-        self.rfc5321 = try? rfc6531.toRFC5321()
-        self.rfc5322 = try? rfc6531.toRFC5322()
+        self.rfc5321 = try? RFC_5321.EmailAddress(rfc6531)
+        self.rfc5322 = try? RFC_5322.EmailAddress(rfc6531)
         self.rfc6531 = rfc6531
         self.displayName = rfc6531.displayName
     }

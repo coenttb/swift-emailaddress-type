@@ -6,7 +6,7 @@ import RFC_6531
 extension EmailAddress {
     /// Initialize from RFC5322
     public init(rfc5322: RFC_5322.EmailAddress) throws {
-        self.rfc5321 = try? rfc5322.toRFC5321()
+        self.rfc5321 = try? RFC_5321.EmailAddress(rfc5322)
         self.rfc5322 = rfc5322
         self.rfc6531 = try {
             guard
