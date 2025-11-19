@@ -5,11 +5,12 @@
 //  Tests for round-trip conversions between RFC formats
 //
 
-@testable import EmailAddress_Standard
 import RFC_5321
 import RFC_5322
 import RFC_6531
 import Testing
+
+@testable import EmailAddress_Standard
 
 @Suite("Round-Trip Conversion Tests")
 struct RoundTripTests {
