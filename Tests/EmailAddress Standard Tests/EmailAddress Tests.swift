@@ -5,10 +5,9 @@
 //  Created by Coen ten Thije Boonkkamp on 22/12/2024.
 //
 
-import Foundation
 import Testing
 
-@testable import EmailAddress
+@testable import EmailAddress_Standard
 
 @Suite("EmailAddress Tests")
 struct EmailAddressTests {

@@ -1,4 +1,3 @@
-import Foundation
 import RFC_1123
 import RFC_5321
 import RFC_6531

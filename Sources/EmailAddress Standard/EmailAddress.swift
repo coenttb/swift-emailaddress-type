@@ -5,8 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 28/12/2024.
 //
 
-import Domain
-import Foundation
+import Domain_Standard
 import RFC_5321
 import RFC_5322
 import RFC_6531
@@ -18,28 +17,13 @@ import RFC_6531
 public struct EmailAddress: Hashable, Sendable {
     /// The canonical RFC 6531 representation
     private let canonical: RFC_6531.EmailAddress
-
-    /// RFC 5321 (SMTP) representation, if the address is ASCII-only
-    public var rfc5321: RFC_5321.EmailAddress? {
-        guard canonical.isASCII else { return nil }
-        return try? RFC_5321.EmailAddress(canonical)
+    
+    /// Internal initializer that directly stores the canonical RFC 6531 representation
+    /// Used by conversion initializers in EmailAddress+RFC*.swift files
+    internal init(canonical: RFC_6531.EmailAddress) {
+        self.canonical = canonical
     }
-
-    /// RFC 5322 (Internet Message Format) representation, if the address is ASCII-only
-    public var rfc5322: RFC_5322.EmailAddress? {
-        guard canonical.isASCII else { return nil }
-        return try? RFC_5322.EmailAddress(canonical)
-    }
-
-    /// RFC 6531 (SMTPUTF8) representation - always available
-    public var rfc6531: RFC_6531.EmailAddress { canonical }
-
-    /// The display name associated with this email address, if any
-    public var displayName: String? { canonical.displayName }
-
-    public var name: String? { displayName }
-    public var address: String { canonical.addressValue }
-
+    
     /// Initialize with an email address string
     public init(
         displayName: String? = nil,
@@ -47,7 +31,7 @@ public struct EmailAddress: Hashable, Sendable {
     ) throws {
         // Parse as RFC 6531 (most permissive format)
         let rfc6531Address = try RFC_6531.EmailAddress(string)
-
+        
         // Store canonical form with optional display name override
         if let displayName = displayName {
             self.canonical = RFC_6531.EmailAddress(
@@ -59,7 +43,9 @@ public struct EmailAddress: Hashable, Sendable {
             self.canonical = rfc6531Address
         }
     }
+}
 
+extension EmailAddress_Standard.EmailAddress {
     /// Initialize with components
     public init(displayName: String? = nil, localPart: String, domain: String) throws {
         try self.init(
@@ -67,27 +53,43 @@ public struct EmailAddress: Hashable, Sendable {
             "\(localPart)@\(domain)"
         )
     }
+}
 
-    /// Internal initializer that directly stores the canonical RFC 6531 representation
-    /// Used by conversion initializers in EmailAddress+RFC*.swift files
-    internal init(canonical: RFC_6531.EmailAddress) {
-        self.canonical = canonical
+extension EmailAddress_Standard.EmailAddress {
+    
+    public var name: String? { displayName }
+    
+    /// The display name associated with this email address, if any
+    public var displayName: String? { canonical.displayName }
+    
+}
+
+extension EmailAddress_Standard.EmailAddress {
+    
+    /// RFC 5321 (SMTP) representation, if the address is ASCII-only
+    public var rfc5321: RFC_5321.EmailAddress? {
+        guard canonical.isASCII else { return nil }
+        return try? RFC_5321.EmailAddress(canonical)
     }
-
+    
+    /// RFC 5322 (Internet Message Format) representation, if the address is ASCII-only
+    public var rfc5322: RFC_5322.EmailAddress? {
+        guard canonical.isASCII else { return nil }
+        return try? RFC_5322.EmailAddress(canonical)
+    }
+    
+    /// RFC 6531 (SMTPUTF8) representation - always available
+    public var rfc6531: RFC_6531.EmailAddress { canonical }
+    
 }
 
 // MARK: - Properties
 extension EmailAddress {
-    /// The email address string, using the most specific format available
-    public var stringValue: String {
-        rfc5321?.stringValue ?? rfc5322?.stringValue ?? rfc6531.stringValue
-    }
-
     /// The email address string without display name
-    public var addressValue: String {
-        rfc5321?.addressValue ?? rfc5322?.addressValue ?? rfc6531.addressValue
+    public var address: String {
+        rfc5321?.address ?? rfc5322?.address ?? rfc6531.address
     }
-
+    
     /// The local part (before @)
     public var localPart: String {
         if let rfc5321 = rfc5321 {
@@ -113,17 +115,17 @@ extension EmailAddress {
         }
         if let domain = rfc5322?.domain {
             // Safe: RFC 5322 domain was validated during EmailAddress init
-            return try! .init(rfc1123: domain)
+            return .init(rfc1123: domain)
         }
         // Safe: RFC 6531 domain was validated during EmailAddress init
-        return try! .init(rfc1123: rfc6531.domain)
+        return .init(rfc1123: rfc6531.domain)
     }
-
+    
     /// Returns true if this is an ASCII-only email address
     public var isASCII: Bool {
         rfc5321 != nil || rfc5322 != nil
     }
-
+    
     /// Returns true if this is an internationalized email address
     public var isInternationalized: Bool {
         !isASCII
@@ -142,7 +144,7 @@ extension EmailAddress {
     public func normalized() -> EmailAddress {
         // Already normalized if we only have RFC 6531
         guard isASCII else { return self }
-
+        
         // Use most restrictive format available
         if let rfc5321 = self.rfc5321 {
             // Safe: Reconstructing from already-validated RFC 5321 format
@@ -154,27 +156,27 @@ extension EmailAddress {
         }
         return self
     }
-
+    
     /// Returns true if this email address matches another under the same RFC
     /// - Attempts to compare using the most restrictive common format
     /// - Display names are not considered in the match
     public func matches(_ other: EmailAddress) -> Bool {
         if let myRFC5321 = rfc5321, let otherRFC5321 = other.rfc5321 {
-            return myRFC5321.addressValue.lowercased() == otherRFC5321.addressValue.lowercased()
+            return myRFC5321.address.lowercased() == otherRFC5321.address.lowercased()
         }
         if let myRFC5322 = rfc5322, let otherRFC5322 = other.rfc5322 {
-            return myRFC5322.addressValue.lowercased() == otherRFC5322.addressValue.lowercased()
+            return myRFC5322.address.lowercased() == otherRFC5322.address.lowercased()
         }
-        return rfc6531.addressValue.lowercased() == other.rfc6531.addressValue.lowercased()
+        return rfc6531.address.lowercased() == other.rfc6531.address.lowercased()
     }
 }
 
 // MARK: - Errors
 extension EmailAddress {
-    public enum Error: Swift.Error, Equatable, LocalizedError {
+    public enum Error: Swift.Error, Equatable {
         case conversionFailure
         case invalidFormat(description: String)
-
+        
         public var errorDescription: String? {
             switch self {
             case .conversionFailure:
@@ -188,7 +190,7 @@ extension EmailAddress {
 
 // MARK: - Protocol Conformances
 extension EmailAddress: CustomStringConvertible {
-    public var description: String { stringValue }
+    public var description: String { String(self) }
 }
 
 extension EmailAddress: Codable {
@@ -196,7 +198,7 @@ extension EmailAddress: Codable {
         var container = encoder.singleValueContainer()
         try container.encode(self.rawValue)
     }
-
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawValue = try container.decode(String.self)
@@ -205,31 +207,23 @@ extension EmailAddress: Codable {
 }
 
 extension EmailAddress: RawRepresentable {
-    public var rawValue: String { stringValue }
+    public var rawValue: String { String(self) }
     public init?(rawValue: String) { try? self.init(rawValue) }
-}
-
-// MARK: - Convenience Extensions
-extension String {
-    /// Attempts to parse the string as an email address
-    public func asEmailAddress() throws -> EmailAddress {
-        try EmailAddress(self)
-    }
 }
 
 // Could add convenience initializer for common case
 extension EmailAddress {
-    public static func ascii(_ string: String) throws -> Self {
+    public init (ascii string: String) throws  {
         let email = try Self(string)
         guard email.isASCII else {
             throw Error.invalidFormat(description: "Must be ASCII-only")
         }
-        return email
+        self = email
     }
 }
 
 extension EmailAddress {
     /// A non-RFC5322 compliant regex for simple validation scenarios
     public static let regex: String =
-        "^(?!.*\\.\\.)[A-Za-z0-9](?:[A-Za-z0-9._%+-]{0,62}[A-Za-z0-9])?@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+    "^(?!.*\\.\\.)[A-Za-z0-9](?:[A-Za-z0-9._%+-]{0,62}[A-Za-z0-9])?@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
 }

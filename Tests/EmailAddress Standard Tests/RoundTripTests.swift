@@ -5,8 +5,7 @@
 //  Tests for round-trip conversions between RFC formats
 //
 
-import Foundation
-@testable import EmailAddress
+@testable import EmailAddress_Standard
 import RFC_5321
 import RFC_5322
 import RFC_6531
@@ -24,7 +23,7 @@ struct RoundTripTests {
             throw EmailAddress.Error.conversionFailure
         }
 
-        #expect(converted.addressValue == original.addressValue)
+        #expect(converted.address == original.address)
         #expect(converted.displayName == original.displayName)
         #expect(converted.localPart.description == original.localPart.description)
         #expect(converted.domain.name == original.domain.name)
@@ -39,7 +38,7 @@ struct RoundTripTests {
             throw EmailAddress.Error.conversionFailure
         }
 
-        #expect(converted.addressValue == original.addressValue)
+        #expect(converted.address == original.address)
         #expect(converted.displayName == original.displayName)
     }
 
@@ -49,7 +48,7 @@ struct RoundTripTests {
         let emailAddress = EmailAddress(rfc6531: original)
         let converted = emailAddress.rfc6531
 
-        #expect(converted.addressValue == original.addressValue)
+        #expect(converted.address == original.address)
         #expect(converted.displayName == original.displayName)
     }
 
@@ -63,9 +62,9 @@ struct RoundTripTests {
         #expect(emailAddress.rfc5322 != nil)
 
         // Verify all formats produce the same address value
-        let rfc5321Value = emailAddress.rfc5321?.addressValue
-        let rfc5322Value = emailAddress.rfc5322?.addressValue
-        let rfc6531Value = emailAddress.rfc6531.addressValue
+        let rfc5321Value = emailAddress.rfc5321?.address
+        let rfc5322Value = emailAddress.rfc5322?.address
+        let rfc6531Value = emailAddress.rfc6531.address
 
         #expect(rfc5321Value == "test@example.com")
         #expect(rfc5322Value == "test@example.com")
@@ -81,6 +80,6 @@ struct RoundTripTests {
         #expect(emailAddress.isInternationalized == true)
         #expect(emailAddress.rfc5321 == nil)
         #expect(emailAddress.rfc5322 == nil)
-        #expect(emailAddress.rfc6531.addressValue == "用户@example.com")
+        #expect(emailAddress.rfc6531.address == "用户@example.com")
     }
 }

@@ -1,13 +1,13 @@
-# swift-emailaddress-type
+# swift-emailaddress-standard
 
-[![CI](https://github.com/coenttb/swift-emailaddress-type/workflows/CI/badge.svg)](https://github.com/coenttb/swift-emailaddress-type/actions/workflows/ci.yml)
+[![CI](https://github.com/coenttb/swift-emailaddress-standard/workflows/CI/badge.svg)](https://github.com/coenttb/swift-emailaddress-standard/actions/workflows/ci.yml)
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
 Type-safe email address validation and parsing for Swift, supporting multiple RFC standards.
 
 ## Overview
 
-`swift-emailaddress-type` provides a robust `EmailAddress` type that supports multiple RFC standards for email address formats:
+`swift-emailaddress-standard` provides a robust `EmailAddress` type that supports multiple RFC standards for email address formats:
 
 - **RFC 5321**: SMTP email addresses (ASCII-only, strict format)
 - **RFC 5322**: Internet Message Format addresses (ASCII with display names)
@@ -23,7 +23,7 @@ The library automatically selects the most appropriate RFC format based on the i
 - **Type Safety**: Compile-time guarantees with Swift 6.0 strict concurrency
 - **Validation**: Automatic validation against RFC standards
 - **Codable**: Full JSON encoding/decoding support
-- **Domain Support**: Integrated with `swift-domain-type` for proper domain handling
+- **Domain Support**: Integrated with `swift-domain-standard` for proper domain handling
 
 ## Installation
 
@@ -31,7 +31,7 @@ Add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/coenttb/swift-emailaddress-type", from: "0.0.1")
+    .package(url: "https://github.com/coenttb/swift-emailaddress-standard", from: "0.0.1")
 ]
 ```
 
@@ -40,7 +40,7 @@ dependencies: [
 ### Basic Email Addresses
 
 ```swift
-import EmailAddress
+import EmailAddress_Standard
 
 // Simple email address
 let email = try EmailAddress("john.doe@example.com")
@@ -148,11 +148,11 @@ if let rfc5322 = email.rfc5322 {
 
 ```swift
 // Convert from string
-let email = try "john.doe@example.com".asEmailAddress()
+let email = try EmailAddress("john.doe@example.com")
 
 // Convert to string
-let emailString = email.stringValue
-let addressOnly = email.addressValue  // Without display name
+let emailString = email.value
+let addressOnly = email.address  // Without display name
 ```
 
 ### Codable Support
@@ -266,7 +266,7 @@ public enum EmailAddressError: Error, Equatable, LocalizedError {
 
 ### Dependencies
 
-- [swift-domain-type](https://github.com/coenttb/swift-domain-type): A Swift package with a type-safe Domain model.
+- [swift-domain-standard](https://github.com/coenttb/swift-domain-standard): A Swift package with a type-safe Domain model.
 
 ### Used By
 
@@ -291,7 +291,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This package is part of the [coenttb](https://github.com/coenttb) suite of Swift server-side packages.
 
-For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/coenttb/swift-emailaddress-type).
+For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/coenttb/swift-emailaddress-standard).
 
 - [Subscribe to newsletter](http://coenttb.com/en/newsletter/subscribe)
 - [Follow on X](http://x.com/coenttb)

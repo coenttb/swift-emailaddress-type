@@ -1,6 +1,6 @@
 //
 //  ReadmeVerificationTests.swift
-//  swift-emailaddress-type
+//  swift-emailaddress-standard
 //
 //  Validates all code examples from README.md
 //
@@ -8,7 +8,7 @@
 import Foundation
 import Testing
 
-@testable import EmailAddress
+@testable import EmailAddress_Standard
 
 @Suite("README Code Examples Validation", .serialized)
 struct ReadmeVerificationTests {
@@ -70,7 +70,7 @@ struct ReadmeVerificationTests {
         let email = try EmailAddress("John Doe <john.doe@example.com>")
         #expect(email.name == "John Doe")
         #expect(email.address == "john.doe@example.com")
-        #expect(email.stringValue == "John Doe <john.doe@example.com>")
+        #expect(email.description == "John Doe <john.doe@example.com>")
     }
 
     @Test("Special Characters and Quoted Local Parts (README lines 109-120)")
@@ -108,22 +108,22 @@ struct ReadmeVerificationTests {
 
         // Access RFC-specific formats
         if let rfc5321 = email.rfc5321 {
-            #expect(rfc5321.addressValue.contains("@"))
+            #expect(rfc5321.address.contains("@"))
         }
         if let rfc5322 = email.rfc5322 {
-            #expect(rfc5322.addressValue.contains("@"))
+            #expect(rfc5322.address.contains("@"))
         }
     }
 
     @Test("String Conversion (README lines 150-157)")
     func stringConversion() throws {
         // Convert from string
-        let email = try "john.doe@example.com".asEmailAddress()
+        let email = try EmailAddress("john.doe@example.com")
         #expect(email.address == "john.doe@example.com")
 
         // Convert to string
-        let emailString = email.stringValue
-        let addressOnly = email.addressValue  // Without display name
+        let emailString = email.description
+        let addressOnly = email.address  // Without display name
         #expect(emailString == "john.doe@example.com")
         #expect(addressOnly == "john.doe@example.com")
     }
@@ -184,7 +184,7 @@ struct ReadmeVerificationTests {
     @Test("ASCII-Only Emails (README lines 213-219)")
     func asciiOnlyEmails() throws {
         // Enforce ASCII-only email
-        let asciiEmail = try EmailAddress.ascii("john@example.com")
+        let asciiEmail = try EmailAddress(ascii: "john@example.com")
         #expect(asciiEmail.isASCII)
         #expect(asciiEmail.address == "john@example.com")
     }
