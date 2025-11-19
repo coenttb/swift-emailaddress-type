@@ -3,11 +3,11 @@ import Testing
 
 @testable import EmailAddress_Standard
 
-@Suite("RFC 2822 AddrSpec Conversion Tests")
-struct RFC2822ConversionTests {
+@Suite
+struct `RFC 2822 AddrSpec Conversion Tests` {
 
-    @Test("Convert EmailAddress to RFC_2822.AddrSpec")
-    func emailAddressToAddrSpec() throws {
+    @Test
+    func `Convert EmailAddress to RFC_2822.AddrSpec`() throws {
         let email = try EmailAddress("user@example.com")
         let addrSpec = try RFC_2822.AddrSpec(email)
 
@@ -16,8 +16,8 @@ struct RFC2822ConversionTests {
         #expect(addrSpec.description == "user@example.com")
     }
 
-    @Test("Convert RFC_2822.AddrSpec to EmailAddress")
-    func addrSpecToEmailAddress() throws {
+    @Test
+    func `Convert RFC_2822.AddrSpec to EmailAddress`() throws {
         let addrSpec = try RFC_2822.AddrSpec(localPart: "test", domain: "example.org")
         let email = try EmailAddress(addrSpec)
 
@@ -25,8 +25,8 @@ struct RFC2822ConversionTests {
         #expect(email.rfc5322?.domain.name == "example.org")
     }
 
-    @Test("Round-trip conversion EmailAddress -> AddrSpec -> EmailAddress")
-    func roundTripConversion() throws {
+    @Test
+    func `Round-trip conversion EmailAddress -> AddrSpec -> EmailAddress`() throws {
         let original = try EmailAddress("hello@world.com")
         let addrSpec = try RFC_2822.AddrSpec(original)
         let converted = try EmailAddress(addrSpec)
@@ -34,8 +34,8 @@ struct RFC2822ConversionTests {
         #expect(original == converted)
     }
 
-    @Test("Convert EmailAddress with subdomain to RFC_2822.AddrSpec")
-    func emailWithSubdomainToAddrSpec() throws {
+    @Test
+    func `Convert EmailAddress with subdomain to RFC_2822.AddrSpec`() throws {
         let email = try EmailAddress("admin@mail.example.com")
         let addrSpec = try RFC_2822.AddrSpec(email)
 
@@ -43,8 +43,8 @@ struct RFC2822ConversionTests {
         #expect(addrSpec.domain == "mail.example.com")
     }
 
-    @Test("Convert EmailAddress with special characters to RFC_2822.AddrSpec")
-    func emailWithSpecialCharsToAddrSpec() throws {
+    @Test
+    func `Convert EmailAddress with special characters to RFC_2822.AddrSpec`() throws {
         let email = try EmailAddress("user+tag@example.com")
         let addrSpec = try RFC_2822.AddrSpec(email)
 

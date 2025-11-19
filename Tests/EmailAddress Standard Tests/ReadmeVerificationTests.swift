@@ -13,8 +13,8 @@ import Testing
 @Suite("README Code Examples Validation", .serialized)
 struct ReadmeVerificationTests {
 
-    @Test("Quick Start - Basic Email Addresses (README lines 43-51)")
-    func quickStartBasicEmailAddresses() throws {
+    @Test
+    func `Quick Start - Basic Email Addresses (README lines 43-51)`() throws {
         // Simple email address
         let email = try EmailAddress("john.doe@example.com")
         #expect(email.address == "john.doe@example.com")
@@ -22,8 +22,8 @@ struct ReadmeVerificationTests {
         #expect(email.domain.name == "example.com")
     }
 
-    @Test("Quick Start - Email Addresses with Display Names (README lines 56-64)")
-    func quickStartEmailWithDisplayNames() throws {
+    @Test
+    func `Quick Start - Email Addresses with Display Names (README lines 56-64)`() throws {
         // Email with display name
         let namedEmail = try EmailAddress("John Doe <john.doe@example.com>")
         #expect(namedEmail.name == "John Doe")
@@ -34,8 +34,8 @@ struct ReadmeVerificationTests {
         #expect(quotedEmail.name == "Doe, John")
     }
 
-    @Test("Quick Start - Component-Based Initialization (README lines 69-80)")
-    func quickStartComponentBasedInit() throws {
+    @Test
+    func `Quick Start - Component-Based Initialization (README lines 69-80)`() throws {
         // Initialize with explicit display name
         let email1 = try EmailAddress(
             displayName: "John Doe",
@@ -53,8 +53,8 @@ struct ReadmeVerificationTests {
         #expect(email2.domain.name == "example.com")
     }
 
-    @Test("Email Validation (README lines 87-94)")
-    func emailValidation() throws {
+    @Test
+    func `Email Validation (README lines 87-94)`() throws {
         // Validate email format
         do {
             let email = try EmailAddress("john.doe@example.com")
@@ -64,8 +64,8 @@ struct ReadmeVerificationTests {
         }
     }
 
-    @Test("Working with Display Names (README lines 99-104)")
-    func workingWithDisplayNames() throws {
+    @Test
+    func `Working with Display Names (README lines 99-104)`() throws {
         // Parse email with display name
         let email = try EmailAddress("John Doe <john.doe@example.com>")
         #expect(email.name == "John Doe")
@@ -73,8 +73,8 @@ struct ReadmeVerificationTests {
         #expect(email.description == "John Doe <john.doe@example.com>")
     }
 
-    @Test("Special Characters and Quoted Local Parts (README lines 109-120)")
-    func specialCharactersAndQuotedLocalParts() throws {
+    @Test
+    func `Special Characters and Quoted Local Parts (README lines 109-120)`() throws {
         // Email with special characters in local part
         let specialEmail = try EmailAddress(
             localPart: "test.!#$%&'*+-/=?^_`{|}~",
@@ -91,15 +91,15 @@ struct ReadmeVerificationTests {
         #expect(quotedLocal.domain.name == "example.com")
     }
 
-    @Test("Subdomains (README lines 124-128)")
-    func subdomains() throws {
+    @Test
+    func `Subdomains (README lines 124-128)`() throws {
         // Email with subdomain
         let email = try EmailAddress("test@sub1.sub2.example.com")
         #expect(email.domain.name == "sub1.sub2.example.com")
     }
 
-    @Test("RFC Format Detection (README lines 132-146)")
-    func rfcFormatDetection() throws {
+    @Test
+    func `RFC Format Detection (README lines 132-146)`() throws {
         let email = try EmailAddress("john.doe@example.com")
 
         // Check if ASCII-only
@@ -115,8 +115,8 @@ struct ReadmeVerificationTests {
         }
     }
 
-    @Test("String Conversion (README lines 150-157)")
-    func stringConversion() throws {
+    @Test
+    func `String Conversion (README lines 150-157)`() throws {
         // Convert from string
         let email = try EmailAddress("john.doe@example.com")
         #expect(email.address == "john.doe@example.com")
@@ -128,8 +128,8 @@ struct ReadmeVerificationTests {
         #expect(addressOnly == "john.doe@example.com")
     }
 
-    @Test("Codable Support (README lines 162-176)")
-    func codableSupport() throws {
+    @Test
+    func `Codable Support (README lines 162-176)`() throws {
         struct User: Codable {
             let name: String
             let email: EmailAddress
@@ -149,8 +149,8 @@ struct ReadmeVerificationTests {
         #expect(decodedUser.email.address == "john.doe@example.com")
     }
 
-    @Test("RawRepresentable (README lines 180-188)")
-    func rawRepresentable() throws {
+    @Test
+    func `RawRepresentable (README lines 180-188)`() throws {
         let email = try EmailAddress("john.doe@example.com")
 
         // Get raw value
@@ -163,8 +163,8 @@ struct ReadmeVerificationTests {
         #expect(reconstructed?.address == "john.doe@example.com")
     }
 
-    @Test("Email Matching (README lines 192-200)")
-    func emailMatching() throws {
+    @Test
+    func `Email Matching (README lines 192-200)`() throws {
         let email1 = try EmailAddress("John Doe <john@example.com>")
         let email2 = try EmailAddress("john@example.com")
 
@@ -172,8 +172,8 @@ struct ReadmeVerificationTests {
         #expect(email1.matches(email2))
     }
 
-    @Test("Normalization (README lines 204-209)")
-    func normalization() throws {
+    @Test
+    func `Normalization (README lines 204-209)`() throws {
         let email = try EmailAddress("John Doe <john@example.com>")
 
         // Normalize to most restrictive format
@@ -181,8 +181,8 @@ struct ReadmeVerificationTests {
         #expect(normalized.address == "john@example.com")
     }
 
-    @Test("ASCII-Only Emails (README lines 213-219)")
-    func asciiOnlyEmails() throws {
+    @Test
+    func `ASCII-Only Emails (README lines 213-219)`() throws {
         // Enforce ASCII-only email
         let asciiEmail = try EmailAddress(ascii: "john@example.com")
         #expect(asciiEmail.isASCII)

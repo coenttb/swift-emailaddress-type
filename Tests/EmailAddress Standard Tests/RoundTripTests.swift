@@ -11,11 +11,11 @@ import RFC_5322
 import RFC_6531
 import Testing
 
-@Suite("Round-Trip Conversion Tests")
-struct RoundTripTests {
+@Suite
+struct `Round-Trip Conversion Tests` {
 
-    @Test("RFC 5321 -> EmailAddress -> RFC 5321")
-    func rfc5321RoundTrip() throws {
+    @Test
+    func `RFC 5321 -> EmailAddress -> RFC 5321`() throws {
         let original = try RFC_5321.EmailAddress("user@example.com")
         let emailAddress = try EmailAddress(rfc5321: original)
 
@@ -29,8 +29,8 @@ struct RoundTripTests {
         #expect(converted.domain.name == original.domain.name)
     }
 
-    @Test("RFC 5322 -> EmailAddress -> RFC 5322")
-    func rfc5322RoundTrip() throws {
+    @Test
+    func `RFC 5322 -> EmailAddress -> RFC 5322`() throws {
         let original = try RFC_5322.EmailAddress("John Doe <john@example.com>")
         let emailAddress = try EmailAddress(rfc5322: original)
 
@@ -42,8 +42,8 @@ struct RoundTripTests {
         #expect(converted.displayName == original.displayName)
     }
 
-    @Test("RFC 6531 -> EmailAddress -> RFC 6531")
-    func rfc6531RoundTrip() throws {
+    @Test
+    func `RFC 6531 -> EmailAddress -> RFC 6531`() throws {
         let original = try RFC_6531.EmailAddress("用户@example.com")
         let emailAddress = EmailAddress(rfc6531: original)
         let converted = emailAddress.rfc6531
@@ -52,8 +52,8 @@ struct RoundTripTests {
         #expect(converted.displayName == original.displayName)
     }
 
-    @Test("ASCII email has all RFC format representations")
-    func asciiEmailAllFormats() throws {
+    @Test
+    func `ASCII email has all RFC format representations`() throws {
         // Initialize from string - using init with components to avoid ambiguity
         let emailAddress = try EmailAddress(localPart: "test", domain: "example.com")
 
@@ -71,8 +71,8 @@ struct RoundTripTests {
         #expect(rfc6531Value == "test@example.com")
     }
 
-    @Test("Internationalized email only has RFC 6531 format")
-    func internationalizedEmailFormat() throws {
+    @Test
+    func `Internationalized email only has RFC 6531 format`() throws {
         // Create via RFC 6531 directly to avoid ambiguity
         let rfc6531 = try RFC_6531.EmailAddress("用户@example.com")
         let emailAddress = EmailAddress(rfc6531: rfc6531)

@@ -9,11 +9,11 @@ import Testing
 
 @testable import EmailAddress_Standard
 
-@Suite("EmailAddress Tests")
-struct EmailAddressTests {
+@Suite
+struct `EmailAddress Tests` {
 
-    @Test("Successfully initializes with valid components")
-    func testValidComponentsInitialization() throws {
+    @Test
+    func `Successfully initializes with valid components`() throws {
         let email = try EmailAddress(
             displayName: "John Doe",
             "john.doe@example.com"
@@ -25,8 +25,8 @@ struct EmailAddressTests {
         #expect(email.address == "john.doe@example.com")
     }
 
-    @Test("Successfully initializes from valid string with name")
-    func testValidStringWithNameInitialization() throws {
+    @Test
+    func `Successfully initializes from valid string with name`() throws {
         let email = try EmailAddress("John Doe <john.doe@example.com>")
 
         #expect(email.name == "John Doe")
@@ -34,8 +34,8 @@ struct EmailAddressTests {
         #expect(email.domain.name == "example.com")
     }
 
-    @Test("Successfully initializes from valid string without name")
-    func testValidStringWithoutNameInitialization() throws {
+    @Test
+    func `Successfully initializes from valid string without name`() throws {
         let email = try EmailAddress("john.doe@example.com")
 
         #expect(email.name == nil)
@@ -43,8 +43,8 @@ struct EmailAddressTests {
         #expect(email.domain.name == "example.com")
     }
 
-    @Test("Successfully initializes with quoted name containing special characters")
-    func testQuotedNameInitialization() throws {
+    @Test
+    func `Successfully initializes with quoted name containing special characters`() throws {
         let email = try EmailAddress("\"Doe, John\" <john.doe@example.com>")
 
         #expect(email.name == "Doe, John")
@@ -52,8 +52,8 @@ struct EmailAddressTests {
         #expect(email.domain.name == "example.com")
     }
 
-    @Test("Successfully handles quoted local part")
-    func testQuotedLocalPart() throws {
+    @Test
+    func `Successfully handles quoted local part`() throws {
         let email = try EmailAddress(
             localPart: "\"john.doe\"",
             domain: "example.com"
@@ -63,8 +63,8 @@ struct EmailAddressTests {
         #expect(email.domain.name == "example.com")
     }
 
-    @Test("Successfully creates from convenience initializers")
-    func testConvenienceInitializers() throws {
+    @Test
+    func `Successfully creates from convenience initializers`() throws {
         let unnamedEmail = try EmailAddress("john.doe@example.com")
         #expect(unnamedEmail.name == nil)
         #expect(unnamedEmail.address == "john.doe@example.com")
@@ -74,8 +74,8 @@ struct EmailAddressTests {
         #expect(namedEmail.address == "john.doe@example.com")
     }
 
-    @Test("Successfully converts to and from raw value")
-    func testRawValueConversion() throws {
+    @Test
+    func `Successfully converts to and from raw value`() throws {
         let original = try EmailAddress("John Doe <john.doe@example.com>")
         let rawValue = original.rawValue
         let reconstructed = EmailAddress(rawValue: rawValue)
@@ -85,8 +85,8 @@ struct EmailAddressTests {
         #expect(reconstructed?.address == "john.doe@example.com")
     }
 
-    @Test("Correctly formats description")
-    func testDescription() throws {
+    @Test
+    func `Correctly formats description`() throws {
         let plainEmail = try EmailAddress("john.doe@example.com")
         #expect(plainEmail.description == "john.doe@example.com")
 
@@ -136,8 +136,8 @@ struct EmailAddressTests {
     //        }
     //    }
 
-    @Test("Successfully handles special characters in local part")
-    func testSpecialCharactersInLocalPart() throws {
+    @Test
+    func `Successfully handles special characters in local part`() throws {
         let specialChars = "!#$%&'*+-/=?^_`{|}~"
         let email = try EmailAddress(localPart: "test.\(specialChars)", domain: "example.com")
 
@@ -145,15 +145,15 @@ struct EmailAddressTests {
         #expect(email.address == "test.\(specialChars)@example.com")
     }
 
-    @Test("Successfully handles subdomains")
-    func testSubdomains() throws {
+    @Test
+    func `Successfully handles subdomains`() throws {
         let email = try EmailAddress("test@sub1.sub2.example.com")
 
         #expect(email.domain.name == "sub1.sub2.example.com")
     }
 
-    @Test("Correctly implements Hashable")
-    func testHashable() throws {
+    @Test
+    func `Correctly implements Hashable`() throws {
         let email1 = try EmailAddress("John Doe <john@example.com>")
         let email2 = try EmailAddress("John Doe <john@example.com>")
         let email3 = try EmailAddress("Jane Doe <jane@example.com>")
