@@ -1,4 +1,4 @@
-// swift-tools-version:6.0
+// swift-tools-version:6.2
 
 import PackageDescription
 
@@ -11,10 +11,10 @@ extension Target.Dependency {
 }
 
 extension Target.Dependency {
-    static var rfc2822: Self { .product(name: "RFC_2822", package: "swift-rfc-2822") }
-    static var rfc5321: Self { .product(name: "RFC_5321", package: "swift-rfc-5321") }
-    static var rfc5322: Self { .product(name: "RFC_5322", package: "swift-rfc-5322") }
-    static var rfc6531: Self { .product(name: "RFC_6531", package: "swift-rfc-6531") }
+    static var rfc2822: Self { .product(name: "RFC 2822", package: "swift-rfc-2822") }
+    static var rfc5321: Self { .product(name: "RFC 5321", package: "swift-rfc-5321") }
+    static var rfc5322: Self { .product(name: "RFC 5322", package: "swift-rfc-5322") }
+    static var rfc6531: Self { .product(name: "RFC 6531", package: "swift-rfc-6531") }
     static var domain: Self { .product(name: "Domain Standard", package: "swift-domain-standard") }
 }
 
