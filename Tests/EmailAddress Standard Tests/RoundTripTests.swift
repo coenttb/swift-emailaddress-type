@@ -6,9 +6,6 @@
 //
 
 @testable import EmailAddress_Standard
-import RFC_5321
-import RFC_5322
-import RFC_6531
 import Testing
 
 @Suite

@@ -1,6 +1,6 @@
 import RFC_1123
-import RFC_5321
-import RFC_6531
+public import RFC_5321
+public import RFC_6531
 
 extension RFC_5321.EmailAddress {
     /// Initialize from RFC 6531 email address

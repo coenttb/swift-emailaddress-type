@@ -5,6 +5,8 @@
 //  Created by Coen ten Thije Boonkkamp on 19/11/2025.
 //
 
+import RFC_6531
+
 extension String {
     public init(
         _ emailAddress: EmailAddress_Standard.EmailAddress

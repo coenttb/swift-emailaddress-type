@@ -1,5 +1,7 @@
-import RFC_2822
+public import RFC_2822
 import RFC_5322
+import RFC_1123
+import RFC_6531
 
 // MARK: - EmailAddress ↔ RFC_2822.AddrSpec Conversions
 

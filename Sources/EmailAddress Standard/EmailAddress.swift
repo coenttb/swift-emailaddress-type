@@ -5,10 +5,10 @@
 //  Created by Coen ten Thije Boonkkamp on 28/12/2024.
 //
 
-import Domain_Standard
-import RFC_5321
-import RFC_5322
-import RFC_6531
+public import Domain_Standard
+public import RFC_5321
+public import RFC_5322
+public import RFC_6531
 
 /// An email address that can be represented according to different RFC standards
 ///
@@ -102,23 +102,22 @@ extension EmailAddress {
     }
 }
 
-public typealias DomainTypealias = Domain
 extension EmailAddress {
     /// The domain part (after @)
     ///
     /// - Note: Uses `try!` for RFC format conversions because EmailAddress initialization
     ///   ensures all RFC variants contain valid, compatible domains. Converting from an already-validated
     ///   RFC 5322 or RFC 6531 domain to RFC 1123 format cannot fail since validation occurred during init.
-    public var domain: _Domain {
-        if let domain = rfc5321?.domain {
-            return .init(rfc5321: domain)
+    public var domain: Domain_Standard.Domain {
+        if let emailAddress = rfc5321 {
+            return Domain_Standard.Domain(rfc1123: emailAddress.domain)
         }
-        if let domain = rfc5322?.domain {
+        if let emailAddress = rfc5322 {
             // Safe: RFC 5322 domain was validated during EmailAddress init
-            return .init(rfc1123: domain)
+            return Domain_Standard.Domain(rfc1123: emailAddress.domain)
         }
         // Safe: RFC 6531 domain was validated during EmailAddress init
-        return .init(rfc1123: rfc6531.domain)
+        return Domain_Standard.Domain(rfc1123: rfc6531.domain)
     }
     
     /// Returns true if this is an ASCII-only email address
@@ -194,12 +193,12 @@ extension EmailAddress: CustomStringConvertible {
 }
 
 extension EmailAddress: Codable {
-    public func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(self.rawValue)
     }
     
-    public init(from decoder: Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawValue = try container.decode(String.self)
         try self.init(rawValue)

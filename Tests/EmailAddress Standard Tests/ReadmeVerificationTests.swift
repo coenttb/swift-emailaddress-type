@@ -7,7 +7,6 @@
 
 import Foundation
 import Testing
-
 @testable import EmailAddress_Standard
 
 @Suite("README Code Examples Validation", .serialized)
