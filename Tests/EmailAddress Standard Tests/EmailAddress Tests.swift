@@ -98,39 +98,39 @@ struct `EmailAddress Tests` {
 
     //    @Test("Throws error for invalid local part")
     //    func testInvalidLocalPart() throws {
-    //        #expect(throws: EmailAddress.ValidationError.invalidLocalPart) {
+    //        #expect(throws: EmailAddress.Error.invalidLocalPart) {
     //            try EmailAddress(localPart: "", domain: "example.com")
     //        }
     //
     //        let longLocalPart = String(repeating: "a", count: 65)
-    //        #expect(throws: EmailAddress.ValidationError.invalidLocalPart) {
+    //        #expect(throws: EmailAddress.Error.invalidLocalPart) {
     //            try EmailAddress(localPart: longLocalPart, domain: "example.com")
     //        }
     //    }
     //
     //    @Test("Throws error for invalid domain")
     //    func testInvalidDomain() throws {
-    //        #expect(throws: EmailAddress.ValidationError.invalidDomain) {
+    //        #expect(throws: EmailAddress.Error.invalidDomain) {
     //            try EmailAddress(localPart: "john", domain: "")
     //        }
     //
-    //        #expect(throws: EmailAddress.ValidationError.invalidDomain) {
+    //        #expect(throws: EmailAddress.Error.invalidDomain) {
     //            try EmailAddress(localPart: "john", domain: "-invalid.com")
     //        }
     //
     //        let longDomain = String(repeating: "a", count: 256)
-    //        #expect(throws: EmailAddress.ValidationError.invalidDomain) {
+    //        #expect(throws: EmailAddress.Error.invalidDomain) {
     //            try EmailAddress(localPart: "john", domain: longDomain)
     //        }
     //    }
     //
     //    @Test("Throws error for invalid format")
     //    func testInvalidFormat() throws {
-    //        #expect(throws: EmailAddress.ValidationError.invalidFormat) {
+    //        #expect(throws: EmailAddress.Error.invalidFormat) {
     //            try EmailAddress("invalid email format")
     //        }
     //
-    //        #expect(throws: EmailAddress.ValidationError.invalidFormat) {
+    //        #expect(throws: EmailAddress.Error.invalidFormat) {
     //            try EmailAddress("invalid@")
     //        }
     //    }
