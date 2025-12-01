@@ -16,7 +16,10 @@ struct `RFC 2822 AddrSpec Conversion Tests` {
 
     @Test
     func `Convert RFC_2822.AddrSpec to EmailAddress`() throws {
-        let addrSpec = try RFC_2822.AddrSpec(localPart: "test", domain: "example.org")
+        let addrSpec = try RFC_2822.AddrSpec(
+            localPart: "test",
+            domain: "example.org"
+        )
         let email = try EmailAddress(addrSpec)
 
         #expect(email.rfc5322?.localPart.description == "test")

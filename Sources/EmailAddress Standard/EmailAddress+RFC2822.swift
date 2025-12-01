@@ -56,8 +56,7 @@ extension RFC_2822.AddrSpec {
             // RFC 5322 addr-spec syntax ≡ RFC 2822 addr-spec syntax
             // Pre-validated RFC 5322 values are guaranteed valid RFC 2822
             // Safe to use __unchecked
-            self.init(
-                __unchecked: (),
+            try self.init(
                 localPart: String(describing: rfc5322.localPart),
                 domain: rfc5322.domain.name
             )
