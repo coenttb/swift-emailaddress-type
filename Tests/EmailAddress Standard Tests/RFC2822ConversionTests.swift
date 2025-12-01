@@ -1,4 +1,5 @@
 import Testing
+
 @testable import EmailAddress_Standard
 
 @Suite
